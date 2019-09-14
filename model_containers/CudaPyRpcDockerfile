@@ -1,0 +1,23 @@
+FROM nvidia/cuda:9.0-cudnn7-runtime
+# FROM continuumio/anaconda:latest
+
+# Set anaconda path
+ENV ANACONDA /opt/anaconda
+ENV PATH $ANACONDA/bin:$PATH
+
+RUN mkdir -p /model \
+      && apt-get update \
+      && apt-get install -y wget build-essential libzmq5 libzmq5-dev
+
+RUN wget -P /tmp/ http://repo.continuum.io/archive/Anaconda2-4.4.0-Linux-x86_64.sh
+RUN bash /tmp/Anaconda2-4.4.0-Linux-x86_64.sh -b -p $ANACONDA
+RUN rm /tmp/Anaconda2-4.4.0-Linux-x86_64.sh
+RUN conda install -y pyzmq subprocess32
+
+WORKDIR /container
+
+COPY __init__.py rpc.py /container/
+
+ENV CLIPPER_MODEL_PATH=/model
+
+# vim: set filetype=dockerfile:

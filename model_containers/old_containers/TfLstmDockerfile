@@ -1,0 +1,11 @@
+FROM model-comp/tf-rpc:latest
+
+ENV CLIPPER_MODEL_VOCAB_PATH=/model/vocab
+
+COPY tf_lstm_model_data /model
+COPY tf_lstm_container.py /container
+COPY tf_lstm_deps/ /container
+
+CMD ["python", "/container/tf_lstm_container.py"]
+
+# vim: set filetype=dockerfile:

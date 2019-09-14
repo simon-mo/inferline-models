@@ -1,0 +1,16 @@
+FROM model-comp/cuda-rpc
+
+# RUN conda install pytorch torchvision cuda90 -c pytorch
+# RUN conda install pytorch torchvision -c pytorch
+#NOTE(simon): pytorch1.2 doesn't support cuda90
+RUN conda install pytorch=0.4.1 cuda90 torchvision -c pytorch
+
+COPY pytorch_models/ /root/.torch/
+
+COPY pytorch_container.py /container/
+
+CMD ["python", "/container/pytorch_container.py"]
+
+ENV CLIPPER_MODEL_PATH=/model/model.txt
+
+# vim: set filetype=dockerfile:

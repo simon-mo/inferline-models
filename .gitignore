@@ -1,0 +1,32 @@
+*.swp
+.color_coded
+.ycm_p
+.ycm_extra_conf.py
+*.pyc
+*.log
+model_composition/cpp_benchmarker/curl_out.txt
+*.json
+
+# build directories
+release/
+debug/
+.DS_STORE
+.idea/
+config.log
+target/
+_build/
+*.dSYM
+model_composition/optimizer/simulator/simulation
+
+# scala
+dependency-reduced-pom.xml
+*.iml
+model_composition/text-driver-1/workload_data/
+*.egg-info
+
+# Model container stuff
+model_composition/model_containers/inception_feats_graph_def.pb
+model_composition/model_containers/pytorch_models/
+model_composition/model_containers/tf_resnet_model_data/
+model_composition/model_containers/lang_detect_model_data/
+

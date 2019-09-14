@@ -1,0 +1,5 @@
+FROM gcr.io/clipper-model-comp/pytorch:bench
+
+RUN echo "res50" > /model/model.txt
+
+# vim: set filetype=dockerfile:

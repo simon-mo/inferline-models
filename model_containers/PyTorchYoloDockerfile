@@ -1,0 +1,20 @@
+FROM model-comp/cuda-rpc
+
+RUN conda install pytorch torchvision cuda90 -c pytorch
+
+RUN apt-get update
+RUN apt-get install -y wget git
+
+# Setup YoloV3 Model
+# Patch is used to make the script python2 compatible
+RUN git clone https://github.com/ayooshkathuria/pytorch-yolo-v3.git /tmp/yolo-package
+COPY pytorch_yolo_patch.diff /tmp/yolo-package
+RUN cd /tmp/yolo-package && git apply --ignore-whitespace --ignore-space-change pytorch_yolo_patch.diff && cd /container
+RUN mv /tmp/yolo-package/* .
+RUN wget https://pjreddie.com/media/files/yolov3.weights 
+
+COPY pytorch_yolo_container.py /container/
+
+CMD ["python", "/container/pytorch_yolo_container.py"]
+
+# vim: set filetype=dockerfile:

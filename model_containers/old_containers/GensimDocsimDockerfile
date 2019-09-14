@@ -1,0 +1,13 @@
+FROM model-comp/py-rpc:latest
+
+RUN conda install -c anaconda gensim
+
+WORKDIR /container
+
+COPY impl/gensim_similarity_container.py /container/
+COPY gensim_docsim_model_data/ /model
+
+ENV CLIPPER_MODEL_PATH=/model/gensim_docsim_trained.sav
+ENV CLIPPER_DICT_PATH=/model/out_wordids.txt
+
+CMD ["python", "/container/gensim_similarity_container.py"]

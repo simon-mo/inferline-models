@@ -1,0 +1,7 @@
+FROM model-comp/py-rpc:latest
+
+RUN pip install opencv-contrib-python
+
+COPY impl/opencv_sift_feats_container.py /container/
+
+CMD ["python", "/container/opencv_sift_feats_container.py"]

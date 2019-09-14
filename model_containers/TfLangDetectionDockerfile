@@ -1,0 +1,13 @@
+FROM model-comp/tf-rpc:latest
+
+ENV CLIPPER_MODEL_CONFIG_PATH=/model/tf-lang-config.cPickle
+ENV CLIPPER_MODEL_CHECKPOINT_PATH=/model/model-ckpt
+ENV CLIPPER_MODEL_VOCAB_PATH=/model/vocab
+
+COPY lang_detect_model_data /model
+COPY tf_lang_detect_container.py /container
+COPY tf_lang_detect_deps /container
+
+CMD ["python", "/container/tf_lang_detect_container.py"]
+
+# vim: set filetype=dockerfile:

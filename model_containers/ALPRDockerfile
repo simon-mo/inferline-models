@@ -1,0 +1,17 @@
+FROM model-comp/py-rpc:latest
+
+RUN apt-get update
+RUN apt install -y wget git build-essential gnupg apt-transport-https
+RUN bash -c "wget -O- https://deb.openalpr.com/openalpr.gpg.key | apt-key add -"
+RUN bash -c "echo 'deb https://deb.openalpr.com/master/ trusty main' | tee /etc/apt/sources.list.d/openalpr.list"
+RUN apt-get install -y openalpr openalpr-daemon openalpr-utils libopenalpr-dev
+
+RUN git clone https://github.com/openalpr/openalpr.git /tmp/openalpr
+RUN cd /tmp/openalpr/src/bindings/python/ \
+    && g++ -Wall -shared -fPIC -o libopenalprpy.so openalprpy.cpp -lopenalpr \
+    && cd /container
+RUN mv /tmp/openalpr/src/bindings/python/libopenalprpy.so /usr/lib/libopenalprpy.so
+RUN pip install /tmp/openalpr/src/bindings/python
+
+COPY alpr_container.py /container/
+CMD ["python", "/container/alpr_container.py"]

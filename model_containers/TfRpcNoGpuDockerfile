@@ -1,0 +1,11 @@
+FROM tensorflow/tensorflow:latest
+
+RUN mkdir -p /model \
+    && apt-get update \
+    && apt-get install -y libzmq-dev \
+    && apt-get install -y python-pip \
+    && pip install pyzmq
+
+COPY rpc.py __init__.py /container/
+
+# vim: set filetype=dockerfile:

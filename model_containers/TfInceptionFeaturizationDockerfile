@@ -1,0 +1,10 @@
+FROM model-comp/tf-rpc:latest
+
+WORKDIR /container
+
+COPY tf_inception_feats_container.py /container/
+COPY inception_feats_graph_def.pb /model
+
+ENV CLIPPER_MODEL_PATH=/model/inception_feats_graph_def.pb
+
+CMD ["python", "/container/tf_inception_feats_container.py"]

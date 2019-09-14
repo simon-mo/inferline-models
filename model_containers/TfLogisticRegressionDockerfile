@@ -1,0 +1,7 @@
+FROM model-comp/tf-rpc:latest
+
+WORKDIR /container
+
+COPY tf_logistic_regression_container.py /container/
+
+CMD ["python", "/container/tf_logistic_regression_container.py"]

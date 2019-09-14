@@ -1,0 +1,65 @@
+diff --git a/bbox.py b/bbox.py
+index 8e108b8..a207964 100644
+--- a/bbox.py
++++ b/bbox.py
+@@ -4,7 +4,6 @@ import torch
+ import random
+ 
+ import numpy as np
+-import cv2
+ 
+ def confidence_filter(result, confidence):
+     conf_mask = (result[:,:,4] > confidence).float().unsqueeze(2)
+diff --git a/darknet.py b/darknet.py
+index facb5d7..d16a855 100644
+--- a/darknet.py
++++ b/darknet.py
+@@ -5,25 +5,11 @@ import torch.nn as nn
+ import torch.nn.functional as F 
+ from torch.autograd import Variable
+ import numpy as np
+-import cv2 
+-import matplotlib.pyplot as plt
+ from util import count_parameters as count
+ from util import convert2cpu as cpu
+ from util import predict_transform
+ 
+-class test_net(nn.Module):
+-    def __init__(self, num_layers, input_size):
+-        super(test_net, self).__init__()
+-        self.num_layers= num_layers
+-        self.linear_1 = nn.Linear(input_size, 5)
+-        self.middle = nn.ModuleList([nn.Linear(5,5) for x in range(num_layers)])
+-        self.output = nn.Linear(5,2)
+-    
+-    def forward(self, x):
+-        x = x.view(-1)
+-        fwd = nn.Sequential(self.linear_1, *self.middle, self.output)
+-        return fwd(x)
+-        
++
+ def get_test_input():
+     img = cv2.imread("dog-cycle-car.png")
+     img = cv2.resize(img, (416,416)) 
+@@ -259,7 +245,7 @@ def create_modules(blocks):
+         #Yolo is the detection layer
+         elif x["type"] == "yolo":
+             mask = x["mask"].split(",")
+-            mask = [int(x) for x in mask]
++            mask = [int(m) for m in mask]
+             
+             
+             anchors = x["anchors"].split(",")
+diff --git a/util.py b/util.py
+index c51c628..73de0e8 100644
+--- a/util.py
++++ b/util.py
+@@ -6,8 +6,6 @@ import torch.nn as nn
+ import torch.nn.functional as F 
+ from torch.autograd import Variable
+ import numpy as np
+-import cv2 
+-import matplotlib.pyplot as plt
+ from bbox import bbox_iou
+ 
+ def count_parameters(model):

@@ -1,0 +1,10 @@
+FROM model-comp/py-rpc:latest
+
+WORKDIR /container
+
+COPY impl/opencv_svm_container.py /container/
+COPY opencv_svm_data/ /model
+
+ENV CLIPPER_MODEL_PATH=/model/opencv_svm_trained.sav
+
+CMD ["python", "/container/opencv_svm_container.py"]

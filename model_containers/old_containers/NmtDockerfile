@@ -1,0 +1,21 @@
+# All files annotated with a Google copyright are largely unmodified from NMT source 
+
+# The NMT model depends on Tensorflow version >= 1.4. However, the Dockerhub images distributed by Google only install version 1.3.x. As a result, I’ve uploaded an image that has 1.4x installed to Dockerhub: https://hub.docker.com/r/czumar/tf1-4/. To build this image, I just changed “r1.3” to “r1.4” here: https://github.com/tensorflow/tensorflow/blob/9ff05e9e7f471a8487cdd8a7bb6fdd554055e2dd/tensorflow/tools/docker/Dockerfile.devel-gpu#L76
+
+# The NMT container depends on several data files available for download at: [s3://clipper-model-comp-container-data/nmt_model_data]()
+
+FROM model-comp/tf-1-4-rpc:latest
+
+ENV CLIPPER_SOURCE_VOCAB_PATH=/model/source_vocab.de
+ENV CLIPPER_TARGET_VOCAB_PATH=/model/target_vocab.en
+ENV CLIPPER_MODEL_CHECKPOINT_PATH=/model/translate.ckpt
+ENV CLIPPER_DEFAULT_HPARAMS_PATH=/model/default_hparams.json
+ENV CLIPPER_MODEL_HPARAMS_PATH=/model/model_hparams.json
+
+COPY nmt_model_data/ /model/
+COPY nmt_deps/ /container/
+COPY nmt_container.py /container/
+
+CMD ["python", "/container/nmt_container.py"]
+
+# vim: set filetype=dockerfile:

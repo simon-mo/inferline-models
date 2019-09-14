@@ -1,0 +1,7 @@
+FROM gcr.io/clipper-model-comp/pytorch:bench
+
+COPY preprocessing_container.py /container/
+
+CMD ["python", "/container/preprocessing_container.py"]
+
+# vim: set filetype=dockerfile:

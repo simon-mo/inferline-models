@@ -1,0 +1,13 @@
+FROM model-comp/cuda-rpc
+
+RUN conda install torchvision -c soumith
+
+COPY pytorch_models/ /root/.torch/
+
+COPY pytorch_sleep_container.py /container/
+
+CMD ["python", "/container/pytorch_sleep_container.py"]
+
+ENV CLIPPER_MODEL_PATH=/model/model.txt
+
+# vim: set filetype=dockerfile:

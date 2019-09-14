@@ -1,0 +1,15 @@
+FROM tensorflow/tensorflow:1.5.0-gpu
+
+RUN mkdir -p /model \
+    && apt-get update \
+    && apt-get install -y libzmq-dev \
+    && apt-get install -y python-pip \
+    && pip install pyzmq \
+    && pip install subprocess32
+
+COPY rpc.py __init__.py /container/
+COPY compile_tensorflow.py /
+# RUN cd / && python compile_tensorflow.py
+CMD ["python", "/compile_tensorflow.py"]
+
+# vim: set filetype=dockerfile:

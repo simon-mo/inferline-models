@@ -1,0 +1,10 @@
+FROM model-comp/tf-rpc:latest
+
+WORKDIR /container
+
+COPY tf_kernel_svm_container.py /container/
+
+# Change this to the desired size of the RBF kernel
+ENV CLIPPER_KERNEL_SIZE=2000
+
+CMD ["python", "/container/tf_kernel_svm_container.py"]

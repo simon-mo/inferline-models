@@ -1,0 +1,9 @@
+FROM model-comp/cuda-rpc
+
+RUN conda install torchvision -c soumith
+
+COPY pytorch_resnet_container.py /container/
+
+CMD ["python", "/container/pytorch_resnet_container.py"]
+
+# vim: set filetype=dockerfile:

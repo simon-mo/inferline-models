@@ -1,0 +1,25 @@
+FROM model-comp/tf-rpc:latest
+
+WORKDIR /container
+
+RUN apt-get update
+RUN apt-get install -y wget git
+
+# Download and unzip vocab data and ckpts
+# These are prepared under instruction from https://github.com/tensorflow/nmt/blob/master/README.md#hands-on--lets-train-an-nmt-model
+RUN wget https://s3.amazonaws.com/simon-mo-inferline/nmt_data.zip -P /tmp
+RUN unzip /tmp/nmt_data.zip -d /tmp
+RUN wget https://s3.amazonaws.com/simon-mo-inferline/nmt_model.zip -P /tmp
+RUN unzip /tmp/nmt_model.zip -d /tmp
+
+# Clone nmt direcotry to container dir
+RUN git clone https://github.com/tensorflow/nmt /tmp/nmt \
+      && cd /tmp/nmt/ \
+      && git checkout 365e7386e6659526f00fa4ad17eefb13d52e3706 \
+      &&  mv /tmp/nmt/nmt /container/nmt
+
+COPY tf_nmt_container.py /container/
+
+CMD ["python", "/container/tf_nmt_container.py"]
+
+# vim: set filetype=dockerfile:
